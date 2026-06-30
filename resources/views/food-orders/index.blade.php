@@ -21,7 +21,7 @@
     </tr>
     </thead>
 
-```
+
 <tbody>
 @forelse($orders as $order)
 <tr>
@@ -61,7 +61,7 @@
 </tr>
 @endforelse
 </tbody>
-```
+
 
 </table>
 

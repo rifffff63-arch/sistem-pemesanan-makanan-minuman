@@ -7,7 +7,7 @@
 <form action="{{ route('food-orders.update',$order->id) }}"
       method="POST">
 
-```
+
 @csrf
 @method('PUT')
 
@@ -75,7 +75,7 @@
    class="btn btn-secondary">
     Kembali
 </a>
-```
+
 
 </form>
 
