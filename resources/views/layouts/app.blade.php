@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-
         *{
             font-family:'Poppins',sans-serif;
         }
@@ -143,7 +142,6 @@
             background:linear-gradient(135deg,#2563eb,#7c3aed);
             color:white;
         }
-
     </style>
 
 </head>
@@ -175,10 +173,13 @@
         Pesanan
     </a>
 
+    <!-- Menu Laporan khusus Admin -->
+    @if(Auth::user()->role == 'admin')
     <a href="{{ route('reports.index') }}">
         <i class="bi bi-graph-up"></i>
         Laporan
     </a>
+    @endif
 
     <hr class="text-secondary">
 
