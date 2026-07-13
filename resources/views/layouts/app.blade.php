@@ -34,6 +34,8 @@
             left:0;
             top:0;
             padding:30px 20px;
+            display:flex;
+            flex-direction:column;
         }
 
         .logo{
@@ -69,6 +71,30 @@
 
         .sidebar a i{
             margin-right:10px;
+        }
+
+        /* LOGOUT */
+        .logout-btn{
+            width:100%;
+            background:transparent;
+            border:none;
+            color:#d1d5db;
+            text-align:left;
+            padding:14px 18px;
+            border-radius:16px;
+            font-size:15px;
+            transition:.3s;
+            cursor:pointer;
+        }
+
+        .logout-btn i{
+            margin-right:10px;
+        }
+
+        .logout-btn:hover{
+            background:linear-gradient(135deg,#dc2626,#ef4444);
+            color:white;
+            transform:translateX(5px);
         }
 
         /* MAIN */
@@ -149,15 +175,20 @@
         Pesanan
     </a>
 
-    <a href="#">
+    <a href="{{ route('reports.index') }}">
         <i class="bi bi-graph-up"></i>
         Laporan
     </a>
 
-    <a href="#">
-        <i class="bi bi-gear"></i>
-        Pengaturan
-    </a>
+    <hr class="text-secondary">
+
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </button>
+    </form>
 
 </div>
 
@@ -168,7 +199,6 @@
     <div class="topbar d-flex justify-content-between align-items-center">
 
         <div>
-
             <h4 class="fw-bold mb-0">
                 Dashboard
             </h4>
@@ -176,7 +206,6 @@
             <small class="text-muted">
                 Sistem Pemesanan Makanan & Minuman
             </small>
-
         </div>
 
         <div class="d-flex align-items-center">
@@ -184,17 +213,17 @@
             <div class="me-3 text-end">
 
                 <div class="fw-semibold">
-                    User
+                    {{ Auth::user()->name }}
                 </div>
 
                 <small class="text-muted">
-                    User
+                    {{ Auth::user()->role }}
                 </small>
 
             </div>
 
             <div class="profile">
-                A
+                {{ strtoupper(substr(Auth::user()->name,0,1)) }}
             </div>
 
         </div>
