@@ -3,77 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
+use App\Models\FoodOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MenuItemController extends Controller
 {
+    /**
+     * Menampilkan daftar menu
+     */
     public function index()
     {
         $menuItems = MenuItem::latest()->get();
 
-        return view('menu-items.index', compact('menuItems'));
+        // Menu Terlaris
+        $terlaris = FoodOrder::select('menu_id', DB::raw('SUM(quantity) as total_qty'))
+            ->groupBy('menu_id')
+            ->orderByDesc('total_qty')
+            ->first();
+
+        $topMenu = 'Belum ada';
+        $topValue = 0;
+
+        if ($terlaris && $terlaris->menu) {
+            $topMenu = $terlaris->menu->name;
+            $topValue = $terlaris->total_qty * $terlaris->menu->price;
+        }
+
+        return view('menu-items.index', compact(
+            'menuItems',
+            'topMenu',
+            'topValue'
+        ));
     }
 
-    public function create()
+   
+    public function showQr()
     {
-        return view('menu-items.create');
-    }
+        
+        $url = "http://192.168.72.221:8000/menu-items";
 
-    public function store(Request $request)
-    {
-        MenuItem::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'category' => $request->category,
-            'price' => $request->price,
-            'image' => $request->image,
-            'is_available' => $request->is_available ?? 1,
-            'preparation_time' => $request->preparation_time,
-            'calories' => $request->calories,
-            'is_recommended' => $request->is_recommended ?? 0,
-        ]);
-
-        return redirect()->route('menu-items.index')
-            ->with('success', 'Menu berhasil ditambahkan');
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        $menuItem = MenuItem::findOrFail($id);
-
-        return view('menu-items.edit', compact('menuItem'));
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $menuItem = MenuItem::findOrFail($id);
-
-        $menuItem->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'category' => $request->category,
-            'price' => $request->price,
-            'image' => $request->image,
-            'is_available' => $request->is_available ?? 1,
-            'preparation_time' => $request->preparation_time,
-            'calories' => $request->calories,
-            'is_recommended' => $request->is_recommended ?? 0,
-        ]);
-
-        return redirect()->route('menu-items.index')
-            ->with('success', 'Menu berhasil diupdate');
-    }
-
-    public function destroy(string $id)
-    {
-        MenuItem::findOrFail($id)->delete();
-
-        return redirect()->route('menu-items.index')
-            ->with('success', 'Menu berhasil dihapus');
+        return view('qr-menu', compact('url'));
     }
 }

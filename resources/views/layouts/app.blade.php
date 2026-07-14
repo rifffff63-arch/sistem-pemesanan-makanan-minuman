@@ -146,6 +146,9 @@
 
 </head>
 <body>
+    <a href="{{ route('qr.menu') }}" class="nav-link">
+    <i class="bi bi-qr-code-scan"></i> QR Menu
+</a>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -171,6 +174,11 @@
     <a href="{{ route('food-orders.index') }}">
         <i class="bi bi-cart3"></i>
         Pesanan
+    </a>
+    <!-- TAMBAHKAN DI SINI AGAR RAPI -->
+    <a href="{{ route('qr.menu') }}" class="{{ request()->routeIs('qr.menu') ? 'active' : '' }}">
+        <i class="bi bi-qr-code-scan"></i>
+        QR Menu
     </a>
 
     <!-- Menu Laporan khusus Admin -->

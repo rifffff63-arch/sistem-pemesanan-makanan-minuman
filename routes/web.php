@@ -1,34 +1,92 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\FoodOrderController;
 use App\Http\Controllers\ReportController;
 
-// Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route setelah login
+// =====================
+// LOGIN & REGISTER
+// =====================
+
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.post');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
+
+// Register
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'processRegister'])
+    ->name('register.post');
+
+
+
+// =====================
+// AUTH ROUTES
+// =====================
+
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
-    // Menu
+    // =====================
+    // DASHBOARD
+    // =====================
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+
+
+    // =====================
+    // MENU
+    // =====================
+
     Route::resource('menu-items', MenuItemController::class);
 
-    // Pesanan
+
+
+    // =====================
+    // PESANAN
+    // =====================
+
     Route::resource('food-orders', FoodOrderController::class);
 
-    // Laporan
-    Route::get('/laporan', [ReportController::class, 'index'])->name('reports.index');
+
+
+    // =====================
+    // LAPORAN
+    // =====================
+
+    Route::get('/laporan', [ReportController::class, 'index'])
+        ->name('reports.index');
 
 });
 
-// Redirect halaman awal
+
+
+// =====================
+// DEFAULT
+// =====================
+
 Route::redirect('/', '/dashboard');
+
+
+
+// =====================
+// QR MENU
+// =====================
+
+Route::get('/qr-menu', [MenuItemController::class, 'showQr'])
+    ->name('qr.menu');

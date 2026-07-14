@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Restoran App</title>
+    <title>Daftar Akun - Restoran App</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,29 +20,16 @@
             align-items: center;
             justify-content: center;
             font-family: 'Poppins', sans-serif;
+            padding: 30px 0;
         }
 
-        .login-card {
-            width: 440px;
+        .register-card {
+            width: 460px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-        }
-
-        .brand-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #3b82f6, #4f46e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: auto;
-            color: white;
-            font-size: 36px;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
         }
 
         .form-label {
@@ -74,7 +61,7 @@
             background-color: white;
         }
 
-        .btn-login {
+        .btn-register {
             border-radius: 14px;
             padding: 13px;
             font-weight: 600;
@@ -85,7 +72,7 @@
             box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
         }
 
-        .btn-login:hover {
+        .btn-register:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 20px rgba(79, 70, 229, 0.35);
             background: linear-gradient(135deg, #2563eb, #4338ca);
@@ -113,57 +100,68 @@
 </head>
 <body>
 
-<div class="card login-card border-0">
+<div class="card register-card border-0">
     <div class="card-body p-5">
         
         <div class="text-center mb-4">
-            <div class="brand-logo mb-3">
-                <i class="bi bi-shop"></i>
-            </div>
-            <h2 class="title mb-1">Restoran App</h2>
-            <p class="subtitle">Silakan masuk untuk mengelola pesanan</p>
+            <h2 class="title mb-1">Daftar Akun</h2>
+            <p class="subtitle">Buat akun untuk mulai memesan makanan</p>
         </div>
 
-        @if(session('error'))
-            <div class="alert alert-custom d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-exclamation-circle-fill me-2 fs-5"></i>
-                <div>{{ session('error') }}</div>
+        @if($errors->any())
+            <div class="alert alert-custom mb-4" role="alert">
+                <ul class="mb-0 ps-3">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login.post') }}">
+        <form method="POST" action="{{ route('register.post') }}">
             @csrf
             
+            <div class="mb-3">
+                <label class="form-label">Nama Lengkap</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" name="name" class="form-control" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Alamat Email</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                    <input type="email" name="email" class="form-control" placeholder="nama@email.com" required autocomplete="email">
+                    <input type="email" name="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" required>
                 </div>
             </div>
 
             <div class="mb-4">
-                <label class="form-label">Password</label>
+                <label class="form-label">Konfirmasi Password</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password Anda" required>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-login text-white w-100 mb-4">
-                Masuk Halaman <i class="bi bi-arrow-right ms-1"></i>
+            <button type="submit" class="btn btn-register text-white w-100 mb-4">
+                Daftar Akun Baru <i class="bi bi-person-plus ms-1"></i>
             </button>
             
             <div class="text-center">
-                <span class="text-muted small">Belum terdaftar? </span>
-                <a href="{{ route('register') }}" class="text-decoration-none small fw-bold text-primary">Buat Akun Baru</a>
+                <span class="text-muted small">Sudah memiliki akun? </span>
+                <a href="{{ route('login') }}" class="text-decoration-none small fw-bold text-primary">Masuk di sini</a>
             </div>
         </form>
-
-        <hr class="my-4 opacity-25">
-        <div class="text-center text-muted" style="font-size: 12px; letter-spacing: 0.5px;">
-            
-        </div>
         
     </div>
 </div>
